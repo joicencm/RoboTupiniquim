@@ -13,12 +13,13 @@
         static int y = 0;
         static void Main(string[] args)
         {
-            ExibirArea();
+            InicializarArea();
             
             while (true)
             {
                 Console.Clear();
-                ExibirPrimeriraPosicaoRobo();
+                AtualizarArea();
+                ExibirArea();
                 Console.WriteLine($"\nPosição atual: ({x},{y},{direcoes[direcaoAtual]})");
                 Console.WriteLine("Digite os comandos (E, D, M) ou S para sair:");
                 string comandos = Console.ReadLine().ToUpper();
@@ -48,53 +49,53 @@
 
                 else if (c == 'M')
                 {
-                    if (direcoes[direcaoAtual] == 'N')
-                    {
-
-                        if (y < tamanho - 1) y++;
-                    }
-
-                    else if (direcoes[direcaoAtual] == 'S')
-                    {
-                        if (y > 0) ;y--;
-                    }
-                    else if (direcoes[direcaoAtual] == 'L')
-                    {
-                        if (x < tamanho - 1) x++;
-                    }
-                    else if (direcoes[direcaoAtual] == '0')
-                    {
-                        if (x > 0) ; x--;
-                    }
+                    MoverParaFrente();
                 }
-                   
+
 
             }
         }
 
-        private static void ExibirArea()
+        private static void MoverParaFrente()
+        {
+            char direcao = direcoes[direcaoAtual];
+
+            if (direcao== 'N' && y < tamanho -1)
+                y++; // Norte: sobe no grid (aumenta Y)
+
+            else if (direcao == 'S' && y > 0)
+                y--; // Sul: desce no grid (diminui Y)
+            else if (direcao == 'L' && x < tamanho-1)
+                x++; // Leste: direita
+            else if (direcao == 'O' && x > 0)
+                x--; // Oeste: esquerda
+        }
+
+        private static void InicializarArea()
         {
             for (int l = 0; l < tamanho; l++)
             {
                 for (int c = 0; c < tamanho; c++)
                     area[l, c] = '.';
-
             }
-            area[y, x] = ObterSimboloDirecao();
-
         }
 
-        private static void ExibirPrimeriraPosicaoRobo()
+        private static void ExibirArea()
         {
-            for (int l = 0; l < tamanho; l++)
+            for (int linha = tamanho - 1; linha >= 0; linha--)
             {
-                for (int c = 0; c < tamanho; c++)
-                    Console.Write(area[l, c] + " ");
+                for (int coluna = 0; coluna < tamanho; coluna++)
+                    Console.Write(area[linha, coluna] + " ");
 
                 Console.WriteLine();
             }
         }
 
+        private static void AtualizarArea()
+        {
+            InicializarArea();
+            area[y, x] = ObterSimboloDirecao();
+        }
         static char ObterSimboloDirecao()
         {
             if (direcoes[direcaoAtual] == 'N')
