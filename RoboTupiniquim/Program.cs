@@ -4,24 +4,29 @@
     {
         static int tamanho = 5;
         static char[,] area = new char[tamanho, tamanho];
+        // Direções possíveis em sentido horário: N, L, S, O
+        static char[] direcoes = { 'N', 'L', 'S', 'O' };
+        static int direcaoAtual = 0;
+
+        // Posição inicial do robô
+        static int x = 0;
+        static int y = 0;
         static void Main(string[] args)
         {
             ExibirArea();
-            int linha = 0;
-            int coluna = 0;
-            area[linha, coluna] = '>';
-
+            
             while (true)
             {
                 Console.Clear();
                 ExibirPrimeriraPosicaoRobo();
 
-                Console.WriteLine("\nDigite a direção D (Direite), E (Esquerda) ou S (Sair):");
-                string comando = Console.ReadLine().ToUpper();
-                MoverRoboDireiraEsqueda(ref linha, ref coluna, comando);
+                Console.WriteLine($"\nPosição atual: ({x},{y},{direcoes[direcaoAtual]})");
+                Console.WriteLine("Digite os comandos (E, D, M) ou S para sair:");
+                string comandos = Console.ReadLine().ToUpper();
 
-                if (comando == "S")
+                if (comandos == "S")
                     break;
+                ExecutarComandos(comandos);
 
             }
 
@@ -29,20 +34,42 @@
 
         }
 
-        private static int MoverRoboDireiraEsqueda(ref int linha,  ref int coluna, string comando)
+        private static void ExecutarComandos(string comandos)
         {
-                        area[linha, coluna] = '.';
+            for (int i = 0; i < comandos.Length; i++)
 
-            if (comando == "D" && coluna < tamanho - 1)
-                coluna++;
-            else if (comando == "E" && coluna > 0)
-                coluna--;
+            {
+                char c = comandos[i];
+                if (c == 'E')
+                    direcaoAtual = (direcaoAtual + 3) % 4; //girar a esquerda
 
-            if (comando == "E")
-                area[linha, coluna] = '<';
-            else
-                area[linha, coluna] = '>';
-            return coluna;
+                else if (c == 'D')
+                    direcaoAtual = (direcaoAtual + 1) % 4; // girar a direita
+
+                else if (c == 'M')
+                {
+                    if (direcoes[direcaoAtual] == 'N')
+                    {
+
+                        if (y < tamanho - 1) y++;
+                    }
+
+                    else if (direcoes[direcaoAtual] == 'S')
+                    {
+                        if (y > 0) ;y--;
+                    }
+                    else if (direcoes[direcaoAtual] == 'L')
+                    {
+                        if (x < tamanho - 1) x++;
+                    }
+                    else if (direcoes[direcaoAtual] == '0')
+                    {
+                        if (x > 0) ; x--;
+                    }
+                }
+                   
+
+            }
         }
 
         private static void ExibirArea()
