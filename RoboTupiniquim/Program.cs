@@ -19,13 +19,13 @@
             {
                 Console.Clear();
                 ExibirPrimeriraPosicaoRobo();
-
                 Console.WriteLine($"\nPosição atual: ({x},{y},{direcoes[direcaoAtual]})");
                 Console.WriteLine("Digite os comandos (E, D, M) ou S para sair:");
                 string comandos = Console.ReadLine().ToUpper();
 
                 if (comandos == "S")
                     break;
+
                 ExecutarComandos(comandos);
 
             }
@@ -80,6 +80,7 @@
                     area[l, c] = '.';
 
             }
+            area[y, x] = ObterSimboloDirecao();
 
         }
 
@@ -92,6 +93,20 @@
 
                 Console.WriteLine();
             }
+        }
+
+        static char ObterSimboloDirecao()
+        {
+            if (direcoes[direcaoAtual] == 'N')
+                return '↑';
+            else if (direcoes[direcaoAtual] == 'S')
+                return '↓';
+            else if (direcoes[direcaoAtual] == 'L')
+                return '→';
+            else if (direcoes[direcaoAtual] == 'O')
+                return '←';
+            else
+                return '?';
         }
     }
 }
